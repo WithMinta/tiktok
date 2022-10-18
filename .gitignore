@@ -75,8 +75,8 @@ typings/
 # FuseBox cache
 .fusebox/
 
-#DynamoDB Local files
-.dynamodb/
+#DynamoDB Local files 
+.dynamodb/ 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
@@ -85,5 +85,3 @@ typings/
 .ds_store
 
 dist/
-
-.idea

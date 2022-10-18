@@ -4,7 +4,7 @@ currently this npm supports:
     * Exchange code with  permanent access token
     * Get ads account info
     * Get metrics and performance of uploaded video
-    * Upload and publish a video to tiktok ads account account
+    * Upload and publish a video to tiktok ads account
 2. BUSINESS ACCOUNT
     * Exchange access token from code (after user accepts the app)
     * Refresh old access token 
@@ -20,10 +20,14 @@ currently this npm supports:
     * upload videos to ads account using tiktok creative plugin
 
 # how to use 
-1. ## ads
+ ## 1. ads
     ### flow:
     1. client should send the user to tiktok redirect login dialog:
-    https://ads.tiktok.com/marketing_api/auth?app_id=3127225303000154115&state=your_custom_params&redirect_uri=https%3A%2F%2Fapp-dev.withminta.com%2Fverify-tiktok-ads&rid=nygbomrcwl 
+    https://ads.tiktok.com/marketing_api/auth?app_id=3127225303000154115&state=your_custom_params&redirect_uri=https%3A%2F%2Fapp-dev.withminta.com%2Fverify-tiktok-ads&rid=nygbomrcwl
+    
+![alt text](https://i.imgur.com/CFU8Dqy.png)
+
+
     2. After the user approve tiktok redirects the user back to the client with a code
     3. This code should be exchange to get permanent access token 
     4. Then the videos can be  upload to ads account
@@ -92,9 +96,13 @@ currently this npm supports:
         return response;
     }
     ```
-2. ## BUSINESS ACCOUNT
+ ## 2. BUSINESS ACCOUNT
     ### flow:
     1. client should send the user to tiktok redirect login dialog: https://open-api.tiktok.com/platform/oauth/connect?client_key=6127225303000154115&scope=user.info.basic%2Cuser.insights%2Cvideo.list%2Cvideo.insights%2Ccomment.list%2Ccomment.list.manage%2Cvideo.publish&response_type=code&redirect_uri=http%3A%2F%2F8d76-31-154-30-222.ngrok.io%2Fverify-tiktok&rid=sidiioyto9k
+
+
+![alt text]( https://i.imgur.com/SxVhWTy.png)
+
 
     2. After the user approve tiktok redirects the user back to the client with a code
     3. This code should be exchange to get temp access token 
@@ -139,9 +147,43 @@ currently this npm supports:
         return await ttBusinessAPI.refreshAccessToken(refreshToken);
     }
     ```
-3. ## TIKTOK  ACCOUNT - docs will be ready later
+ ## 3. TIKTOK  ACCOUNT
+### flow:
+    1. client should send the user to tiktok redirect login dialog: "https://open-api.tiktok.com/oauth/access_token?client_key=<clientKey>&client_secret=<secret>&code=<authCode>&grant_type=authorization_code"
+    2. After the user approve tiktok redirects the user back to the client with a code
+    3. This code should be exchange to get temp access token 
+    4. Then the videos can be upload to a tiktok account
+    5. Access token is valid for a few  minutes - refresh access token API should be use before each request
+    
+    ### Exchange access token from code (after user accepts the app)
+    ```
+    async exchangeCodeForAccessToken(code: string) {
+        const ttDeveloperAPI = new TTDeveloperAPI(TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET);
+        return await ttDeveloperAPI.exchangeCodeForAccessToken(code);
+    }
+    ```
+    ### Refresh token before each request use
+    ```
+    async refreshAccessToken(data: { refresh_token: string }) {
+        const ttDeveloperAPI = new TTDeveloperAPI(TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET);
+        return await ttDeveloperAPI.refreshAccessToken(data.refreshToken);
+    }
+    ```
+    ### Upload and post video to tiktok api
+    ```
+    async postVideo(data: { access_token: string, video_url: string, user_id: string }) {
 
-4. ## creative plugin redirect url
+        const payload = {
+            video_url: <videoUrl>, // "https://minta.com/video.mp4"
+            access_token: string,
+            user_id: string,
+        };
+        const ttDeveloperAPI = new TTDeveloperAPI();
+        return await ttDeveloperAPI.postVideo(payload);
+    }
+    ```
+
+ ## 4. Creative plugin redirect url
 note: you must be an official partner of tiktok in order to use the redirect url.
 
 ```
@@ -168,7 +210,6 @@ const tiktokData: ITiktokCreativePluginData = {
                 industryId: "290401"
             };
             const tiktok = new Tiktok();
-            // Act
             const url = await tiktok.handle(tiktokData);
 ```
 the response url is a url which open a tiktok dialog for authentication, then choose ads account then upload media to the chosen ads account.
