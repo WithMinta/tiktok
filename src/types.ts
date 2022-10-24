@@ -229,7 +229,20 @@ export interface ITiktokCreativePluginData extends IBaseTiktokData {
     closeMethod: string;
     isTest: boolean;
 }
-
+export interface ITiktokCatalogUploadProducts extends IBaseTiktokData {
+    bc_id: string;
+    catalog_id: string;
+    products: [];
+    access_token: string;
+}
+export interface ITiktokCatalogGetProducts extends IBaseTiktokData {
+    bc_id: string;
+    catalog_id: string;
+    access_token: string;
+    page?: number;
+    page_size?: number;
+    conditions?: any;
+}
 export type TiktokData = ITiktokCreativePluginData
     | IAdsAccountRegistrationData
     | IAdsAccountInfoData
@@ -243,4 +256,6 @@ export type TiktokData = ITiktokCreativePluginData
     | ITikTokPostUserVideoData
     | ITikTokPostBusinessVideoData
     | ITikTokGetBusinessVideoInfoData
-    | ITiktokRefreshUserAccessToken;
+    | ITiktokRefreshUserAccessToken
+    | ITiktokCatalogGetProducts
+    | ITiktokCatalogUploadProducts;
