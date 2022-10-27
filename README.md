@@ -17,7 +17,10 @@ currently this npm supports:
     * Refresh old access token
     * Get video info (metrics)
 4. TIKTOK CREATIVE PLUGIN
-    * upload videos to ads account using tiktok creative plugin
+    * Upload videos to ads account using tiktok creative plugin
+5. TIKTOK CATALOG
+    * Get products of catalog
+    * Upload products to catalog
 
 # how to use 
  ## 1. ads
@@ -213,3 +216,84 @@ const tiktokData: ITiktokCreativePluginData = {
             const url = await tiktok.handle(tiktokData);
 ```
 the response url is a url which open a tiktok dialog for authentication, then choose ads account then upload media to the chosen ads account.
+
+ ## 5. TIKTOK CATALOG
+     ### Get products from a current catalog
+     https://ads.tiktok.com/marketing_api/docs?id=1709242514611202
+
+ ```
+    import Tiktok, { TiktokActions, ITiktokCatalogGetProducts } from "@minta/tiktok";
+
+    const tiktok = new Tiktok();
+
+    const payloadToFetchProduct: ITiktokCatalogGetProducts = {
+      actionType: TiktokActions.GET_PRODUCTS_OF_CATALOG,
+      bc_id: "example",
+      catalog_id: "example",
+      access_token: "example",
+      page_size: 1,
+      conditions: {
+        or: [
+          {
+            field: "title",
+            values: ["Valentines Day Outfit Baby Boy Heart  Bow Tie Ladies Man"],
+            operator: "EQ",
+            sens_type: "DEFAULT",
+          },
+        ],
+      },
+    };
+    fetched = await tiktok.handle(payloadToFetchProduct);
+```
+
+     ### Upload products to a current catalog
+    https://ads.tiktok.com/marketing_api/docs?id=1709242018476033
+
+```
+    import Tiktok, { TiktokActions, ITiktokCatalogUploadProducts } from "@minta/tiktok";
+
+    const payloadToUploadProduct: ITiktokCatalogUploadProducts = {
+        actionType: TiktokActions.UPLOAD_PRODUCTS_OF_CATALOG,
+        bc_id: "example",
+        catalog_id: "example",
+        access_token: "example",
+        products:[
+            "description": "We have tons of sayings available. Select the Saying/s you want from the selection menu. You may also order the custom option and submit your own text.
+            "video_link": "https://campaigns.withminta.com/2938/27302/akt18zmc3d2930pc3g1f2kyw3h1c120t82502dmbh1.mp4",
+            "image_link": "https://p16-catalog-sg.ibyteimg.com/i18n-dpa-image/b27a7b4d6ecfc04ec15088d7a9bd9399~tplv-dw3ygh5mvh-convert.png",
+            "active_status": "ACTIVATED",
+            "title": "Drink Pouches with Funny Sayings Reusable Travel Flask with Plastic - More Sayings Available",
+            "sku_id": "18003464814663",
+            "price": {
+                "price": 6.0
+            },
+            "google_product_category": "drink pouches",
+            "profession": {
+                "shipping_weight": "0.0000lb",
+                "color": "i'm fancy",
+                "condition": "NEW",
+                "size": "17 ounces",
+                "product_type": "drink pouches"
+            },
+            "availability": "IN_STOCK",
+            "landing_url": {
+                "android_package": "",
+                "iphone_app_store_id": "",
+                "android_url": "",
+                "ios_url": "",
+                "link": "https://noahs-boytique.myshopify.com/products/drink-pouches-with-funny-sayings-reusable-travel-flask-with-plastic-more-sayings-available?variant=18003464814663",
+                "ipad_app_name": "",
+                "ipad_app_store_id": "",
+                "iphone_app_name": "",
+                "android_app_name": "",
+                "ios_app_name": "",
+                "ios_app_store_id": ""
+            },
+            "brand": "Noah's Boytique"
+        }
+      ]
+    };
+    const tiktok = new Tiktok();
+    const uploadedResponse = await tiktok.uploadProductsOfCatalog(payloadToUploadProduct);
+```
+

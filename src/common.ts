@@ -13,6 +13,8 @@ export enum TiktokActions {
   POST_USER_VIDEO = "postUserVideo",
   POST_BUSINESS_VIDEO = "postBusinessVideo",
   GET_BUSINESS_VIDEO_INFO = "getBusinessVideoInfo",
+  GET_PRODUCTS_OF_CATALOG = "getProductsOfCatalog",
+  UPLOAD_PRODUCTS_OF_CATALOG = "uploadProductsOfCatalog",
 }
 
 export enum TiktokOauthGrantTypes {

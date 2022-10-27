@@ -1,6 +1,6 @@
 {
   "name": "@minta/tiktok",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "description": "This library will contain all Tiktok external and integration APIs. currently contains only:Tiktok creative plugin redirect url",
   "main": "dist/index.js",
   "author": "kalitas",

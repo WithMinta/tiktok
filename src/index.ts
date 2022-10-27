@@ -10,6 +10,8 @@ import {
   ITikTokRefreshBusinessAccessTokenData,
   ITiktokRefreshUserAccessToken,
   IUploadVideoToAdsAccountData,
+  ITiktokCatalogGetProducts,
+  ITiktokCatalogUploadProducts,
   TiktokData
 } from "./types";
 import { TiktokActions } from "./common";
@@ -17,6 +19,8 @@ import TTCreativePlugin from "./ttCreativePlugin";
 import TTAdsAPI from "./ttAdsAPI";
 import TiktokBusinessAPI from "./ttBusinessAPI";
 import TTDeveloperAPI from "./ttDeveloperAPI";
+import TiktokCatalogAPI from "./ttCatalog";
+
 
 class TikTok {
   constructor(clientKey: string = "", clientSecret: string = "") {
@@ -32,6 +36,7 @@ class TikTok {
     const ttCreativePlugin = new TTCreativePlugin();
     const ttBusinessAPI = new TiktokBusinessAPI(this.clientKey, this.clientSecret);
     const ttUserAPI = new TTDeveloperAPI(this.clientKey, this.clientSecret);
+    const ttCatalog = new TiktokCatalogAPI();
 
     switch (tiktokData.actionType) {
       /* Creative Plugin */
@@ -66,6 +71,11 @@ class TikTok {
         return await ttUserAPI.refreshAccessToken(tiktokData as ITiktokRefreshUserAccessToken);
       case TiktokActions.POST_USER_VIDEO:
         return await ttUserAPI.postVideo(tiktokData as ITikTokPostUserVideoData);
+      /* Catalog */
+      case TiktokActions.GET_PRODUCTS_OF_CATALOG:
+        return await ttCatalog.getProductsOfCatalog(tiktokData as ITiktokCatalogGetProducts);
+      case TiktokActions.UPLOAD_PRODUCTS_OF_CATALOG:
+        return await ttCatalog.uploadProductsOfCatalog(tiktokData as ITiktokCatalogUploadProducts);
       default:
         throw new Error("actionType is not supported");
     }
